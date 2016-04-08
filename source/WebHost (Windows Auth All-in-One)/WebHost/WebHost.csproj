@@ -127,7 +127,9 @@
       <Link>Configuration\Scopes.cs</Link>
     </Compile>
     <Compile Include="Configuration\Cert.cs" />
+    <Compile Include="ExternalClientStore.cs" />
     <Compile Include="ExternalRegistrationUserService.cs" />
+    <Compile Include="ExternalScopeStore.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>

@@ -22,9 +22,12 @@ namespace WebHost
 
             appBuilder.Map("/windows", ConfigureWindowsTokenProvider);
 
-            var factory = new IdentityServerServiceFactory()
-                .UseInMemoryClients(Clients.Get())
-                .UseInMemoryScopes(Scopes.Get());
+            var factory = new IdentityServerServiceFactory();
+                //.UseInMemoryClients(Clients.Get())
+                //.UseInMemoryScopes(Scopes.Get());
+            factory.ScopeStore = new Registration<IScopeStore>(typeof(ExternalScopeStore));
+            factory.ClientStore = new Registration<IClientStore>(typeof(ExternalClientStore));
+
             factory.UserService = new Registration<IUserService>(typeof(ExternalRegistrationUserService));
 
             var options = new IdentityServerOptions

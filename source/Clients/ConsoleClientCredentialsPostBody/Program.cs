@@ -24,8 +24,8 @@ namespace ConsoleClientCredentialsPostBody
         {
             var client = new TokenClient(
                 Constants.TokenEndpoint,
-                "clientcredentials.client",
-                "secret",
+                "silicon",
+                "F621F470-9731-4A25-80EF-67A6F7C5F4B8",
                 AuthenticationStyle.PostValues);
 
             return client.RequestClientCredentialsAsync("read write").Result;

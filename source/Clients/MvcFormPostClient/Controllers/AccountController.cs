@@ -1,4 +1,6 @@
-﻿using Sample;
+﻿using Configuration;
+using Newtonsoft.Json;
+using Sample;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens;
@@ -10,8 +12,46 @@ using System.Web.Mvc;
 
 namespace MvcFormPostClient.Controllers
 {
+
+    
     public class AccountController : Controller
 	{
+        private static X509Certificate2 _signingCert;
+        private string _issuerName = "https://localhost:44333";
+        static AccountController()
+        {
+            _signingCert = Certificate.Load();
+        }
+
+        [HttpGet]
+        [Route("ConsumeToken")]
+        public ActionResult ValidateToken()
+        {
+            var parameters = new TokenValidationParameters
+            {
+                ValidAudience = _issuerName.EnsureTrailingSlash() + "resources",
+                ValidIssuer = _issuerName,
+                IssuerSigningToken = new X509SecurityToken(_signingCert)
+            };
+
+            string jwt = Request.Headers["Authorization"].Replace("Bearer ","");
+            SecurityToken validatedToken;
+            var handler = new JwtSecurityTokenHandler();
+            var principal = handler.ValidateToken(jwt, parameters, out validatedToken);
+
+            JsonSerializerSettings settings = new JsonSerializerSettings
+            {
+                PreserveReferencesHandling = PreserveReferencesHandling.Objects
+            };
+            var serializer = JsonSerializer.Create(settings);
+
+
+            //TODO buggy
+            //return Content(serializer.Serialize(principal.Claims), "application/json");
+
+            return new HttpStatusCodeResult(200);
+        }
+
         public ActionResult SignIn()
         {
 	        var state = Guid.NewGuid().ToString("N");

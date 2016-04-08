@@ -27,6 +27,24 @@ namespace IdentityServer3.Host.Config
         {
             return new List<Client>
             {
+                 new Client
+                {
+                    ClientName = "Silicon-only Client",
+                    ClientId = "silicon",
+                    Enabled = true,
+                    AccessTokenType = AccessTokenType.Reference,
+
+                    Flow = Flows.ClientCredentials,
+                    ClientSecrets = new List<Secret>
+                    {
+                        new Secret("F621F470-9731-4A25-80EF-67A6F7C5F4B8".Sha256())
+                    },
+                    AllowedScopes = new List<string>
+                        {
+                            "read",
+                            "write"
+                        }
+                },
 
                 /////////////////////////////////////////////////////////////
                 // Console Client Credentials Sample
@@ -310,7 +328,7 @@ namespace IdentityServer3.Host.Config
                     ClientName = "MVC OWIN Hybrid Client",
                     ClientId = "mvc.owin.hybrid",
                     Flow = Flows.Hybrid,
-                    AllowAccessTokensViaBrowser = false,
+                    //AllowAccessTokensViaBrowser = false,
 
                     ClientSecrets = new List<Secret>
                     {
@@ -356,7 +374,7 @@ namespace IdentityServer3.Host.Config
                     ClientName = "MVC OWIN Implicit Client",
                     ClientId = "mvc.owin.implicit",
                     Flow = Flows.Implicit,
-                    AllowAccessTokensViaBrowser = false,
+                    //AllowAccessTokensViaBrowser = false,
 
                     AllowedScopes = new List<string>
                     {
